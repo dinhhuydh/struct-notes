@@ -119,6 +119,9 @@ GEM
       nokogiri (~> 1.13, >= 1.13.0)
       rubyzip (>= 2.0, < 4)
     dotenv (3.2.0)
+    dotenv-rails (3.2.0)
+      dotenv (= 3.2.0)
+      railties (>= 6.1)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (6.0.4)
@@ -418,6 +421,7 @@ DEPENDENCIES
   debug
   devise (~> 5.0)
   docx (~> 0.10.0)
+  dotenv-rails
   importmap-rails
   jbuilder
   kamal
