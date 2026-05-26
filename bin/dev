@@ -5,6 +5,16 @@ if ! gem list foreman -i --silent; then
   gem install foreman
 fi
 
+# Parse arguments (e.g. port=3033)
+for arg in "$@"; do
+  case $arg in
+    port=*)
+      export PORT="${arg#port=}"
+      shift
+      ;;
+  esac
+done
+
 # Default to port 3000 if not specified
 export PORT="${PORT:-3000}"
 
