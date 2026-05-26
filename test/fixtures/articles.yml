@@ -1,0 +1,25 @@
+komodo_draft:
+  title: Komodo Boat Trip
+  hook: An unforgettable journey through the Komodo islands
+  body_sections: <%= [{"heading" => "The Journey", "content" => "We sailed for three days.", "source_excerpt" => "sailed 3 days"}].to_json %>
+  best_for: Adventure seekers
+  not_for: Those afraid of lizards
+  ethics_notes: Respect wildlife distance guidelines
+  key_facts: <%= [{"label" => "Duration", "value" => "3 days", "source_excerpt" => "3 day trip"}].to_json %>
+  raw_notes: "Went on a 3 day Komodo boat trip. Sailed 3 days. Amazing dragons. Cost about $300 per person."
+  status: draft
+  user: alice
+  template: travel_experience
+
+published_article:
+  title: Chiang Mai Elephant Sanctuary
+  hook: A day with gentle giants
+  body_sections: <%= [{"heading" => "The Experience", "content" => "We fed and bathed elephants.", "source_excerpt" => "fed elephants, bathed them"}].to_json %>
+  best_for: Animal lovers
+  not_for: Not for those on tight schedules
+  ethics_notes: No riding policy
+  key_facts: <%= [{"label" => "Price", "value" => "$80", "source_excerpt" => "cost $80"}].to_json %>
+  raw_notes: "Visited elephant sanctuary in Chiang Mai. Fed elephants, bathed them. Cost $80. No riding allowed which is good."
+  status: published
+  user: alice
+  template: travel_experience

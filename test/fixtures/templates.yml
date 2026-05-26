@@ -1,0 +1,15 @@
+travel_experience:
+  name: Travel Experience
+  slug: travel-experience
+  description: General travel experience article
+  prompt_template: "Convert these notes into an article: %{raw_notes}"
+  is_default: true
+  user:
+
+hotel_review:
+  name: Hotel Review
+  slug: hotel-review
+  description: Hotel and accommodation review
+  prompt_template: "Convert these notes into a hotel review: %{raw_notes}"
+  is_default: false
+  user:

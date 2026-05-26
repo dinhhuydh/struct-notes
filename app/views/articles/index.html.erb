@@ -1,0 +1,39 @@
+<div class="flex justify-between items-center mb-8">
+  <h1 class="text-3xl font-bold text-gray-900">Your Articles</h1>
+  <%= link_to "New Article", new_upload_articles_path, class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700" %>
+</div>
+
+<% if @articles.empty? %>
+  <div class="text-center py-16 bg-white rounded-lg border border-gray-200">
+    <p class="text-gray-500 text-lg mb-4">No articles yet.</p>
+    <%= link_to "Create your first article", new_upload_articles_path, class: "text-indigo-600 hover:text-indigo-800 font-medium" %>
+  </div>
+<% else %>
+  <div class="space-y-4">
+    <% @articles.each do |article| %>
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex justify-between items-start">
+        <div class="flex-1">
+          <%= link_to article_path(article) do %>
+            <h2 class="text-xl font-semibold text-gray-900 hover:text-indigo-600">
+              <%= article.title || "Untitled Draft" %>
+            </h2>
+          <% end %>
+          <p class="text-gray-500 text-sm mt-1">
+            <%= article.template&.name || "No template" %> &middot;
+            <span class="<%= article.draft? ? 'text-yellow-600' : 'text-green-600' %>">
+              <%= article.status.capitalize %>
+            </span>
+            &middot; <%= time_ago_in_words(article.created_at) %> ago
+          </p>
+          <% if article.hook.present? %>
+            <p class="text-gray-600 mt-2 text-sm line-clamp-2"><%= article.hook %></p>
+          <% end %>
+        </div>
+        <div class="flex space-x-2 ml-4">
+          <%= link_to "Edit", edit_article_path(article), class: "text-sm text-gray-500 hover:text-indigo-600" %>
+          <%= button_to "Delete", article_path(article), method: :delete, class: "text-sm text-gray-500 hover:text-red-600", data: { turbo_confirm: "Are you sure?" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

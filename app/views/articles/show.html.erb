@@ -1,0 +1,90 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex justify-between items-start mb-8">
+    <div>
+      <span class="inline-block px-2 py-1 text-xs font-medium rounded-full <%= @article.draft? ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' %>">
+        <%= @article.status.capitalize %>
+      </span>
+      <h1 class="text-4xl font-bold text-gray-900 mt-2"><%= @article.title %></h1>
+    </div>
+    <div class="flex space-x-2">
+      <%= link_to "Edit", edit_article_path(@article), class: "text-sm bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50" %>
+      <%= link_to "Back", articles_path, class: "text-sm text-gray-500 hover:text-gray-700 px-4 py-2" %>
+    </div>
+  </div>
+
+  <% if @article.hook.present? %>
+    <div class="bg-indigo-50 border-l-4 border-indigo-400 p-6 mb-8 rounded-r-lg">
+      <p class="text-lg text-indigo-900 italic"><%= @article.hook %></p>
+    </div>
+  <% end %>
+
+  <% if @article.body_sections.present? %>
+    <div class="prose max-w-none mb-8">
+      <% @article.body_sections.each do |section| %>
+        <div class="mb-6">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-3"><%= section["heading"] %></h2>
+          <p class="text-gray-700 leading-relaxed"><%= section["content"] %></p>
+          <% if section["source_excerpt"].present? %>
+            <details class="mt-2">
+              <summary class="text-xs text-gray-400 cursor-pointer hover:text-gray-600">View source</summary>
+              <blockquote class="mt-1 text-xs text-gray-500 bg-gray-50 p-2 rounded border-l-2 border-gray-300 italic">
+                "<%= section["source_excerpt"] %>"
+              </blockquote>
+            </details>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <% if @article.best_for.present? %>
+      <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+        <h3 class="font-semibold text-green-800 mb-2">Best For</h3>
+        <p class="text-green-700 text-sm"><%= @article.best_for %></p>
+      </div>
+    <% end %>
+    <% if @article.not_for.present? %>
+      <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+        <h3 class="font-semibold text-red-800 mb-2">Not For</h3>
+        <p class="text-red-700 text-sm"><%= @article.not_for %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @article.ethics_notes.present? %>
+    <div class="bg-amber-50 p-5 rounded-lg border border-amber-200 mb-8">
+      <h3 class="font-semibold text-amber-800 mb-2">Ethics & Safety Notes</h3>
+      <p class="text-amber-700 text-sm"><%= @article.ethics_notes %></p>
+    </div>
+  <% end %>
+
+  <% if @article.key_facts.present? %>
+    <div class="bg-white p-5 rounded-lg border border-gray-200 mb-8">
+      <h3 class="font-semibold text-gray-900 mb-4">Key Facts</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <% @article.key_facts.each do |fact| %>
+          <div>
+            <dt class="text-xs text-gray-500 uppercase tracking-wide"><%= fact["label"] %></dt>
+            <dd class="text-sm font-medium text-gray-900 mt-1"><%= fact["value"] %></dd>
+            <% if fact["source_excerpt"].present? %>
+              <details class="mt-1">
+                <summary class="text-xs text-gray-400 cursor-pointer hover:text-gray-600">Source</summary>
+                <p class="text-xs text-gray-500 italic mt-1">"<%= fact["source_excerpt"] %>"</p>
+              </details>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @article.raw_notes.present? %>
+    <details class="mb-8">
+      <summary class="text-sm text-gray-500 cursor-pointer hover:text-gray-700 font-medium">View original notes</summary>
+      <div class="mt-2 bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <pre class="text-sm text-gray-600 whitespace-pre-wrap"><%= @article.raw_notes %></pre>
+      </div>
+    </details>
+  <% end %>
+</div>

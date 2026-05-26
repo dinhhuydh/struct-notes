@@ -62,3 +62,11 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "devise", "~> 5.0"
+
+gem "anthropic", "~> 1.43"
+
+gem "docx", "~> 0.10.0"
+
+gem "minitest-rails", "~> 8.0", :group => :test

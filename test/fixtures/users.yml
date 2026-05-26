@@ -1,0 +1,13 @@
+alice:
+  name: Alice
+  email: alice@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  generation_limit: 20
+  generations_this_month: 0
+
+bob:
+  name: Bob
+  email: bob@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  generation_limit: 20
+  generations_this_month: 19
