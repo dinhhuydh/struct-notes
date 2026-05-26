@@ -5,17 +5,7 @@ if ! gem list foreman -i --silent; then
   gem install foreman
 fi
 
-# Parse arguments (e.g. port=3033)
-for arg in "$@"; do
-  case $arg in
-    port=*)
-      export PORT="${arg#port=}"
-      shift
-      ;;
-  esac
-done
-
-# Default to port 3000 if not specified
+# Default to port 3000 if not specified (override with: PORT=3033 bin/dev)
 export PORT="${PORT:-3000}"
 
 # Let the debug gem allow remote connections,
