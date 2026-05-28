@@ -14,5 +14,10 @@ Rails.application.routes.draw do
       get :new_upload, path: "new"
       post :generate
     end
+    member do
+      get :regenerate
+      post :regenerate, action: :do_regenerate
+      get :versions
+    end
   end
 end

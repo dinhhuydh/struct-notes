@@ -24,6 +24,8 @@ class Article < ApplicationRecord
 
   belongs_to :user
   belongs_to :template, optional: true
+  belongs_to :parent, class_name: "Article", optional: true
+  has_many :versions, class_name: "Article", foreign_key: :parent_id, dependent: :nullify
 
   validates :raw_notes, presence: true
   validates :status, inclusion: { in: %w[draft published] }
@@ -32,6 +34,7 @@ class Article < ApplicationRecord
   scope :drafts, -> { where(status: "draft") }
   scope :published, -> { where(status: "published") }
   scope :recent, -> { order(created_at: :desc) }
+  scope :originals, -> { where(parent_id: nil) }
 
   def draft?
     status == "draft"
@@ -47,5 +50,24 @@ class Article < ApplicationRecord
 
   def tone_instruction
     TONES.dig(tone, :instruction) || ""
+  end
+
+  # Returns the root article in the version chain
+  def original_article
+    parent || self
+  end
+
+  # Returns all versions including self, ordered by version number
+  def all_versions
+    root = original_article
+    Article.where(id: root.id).or(Article.where(parent_id: root.id)).order(:version_number)
+  end
+
+  def has_versions?
+    all_versions.count > 1
+  end
+
+  def next_version_number
+    all_versions.maximum(:version_number).to_i + 1
   end
 end

@@ -63,4 +63,55 @@ class ArticleTest < ActiveSupport::TestCase
     article = articles(:komodo_draft)
     assert_equal templates(:travel_experience), article.template
   end
+
+  # Versioning tests
+  test "original_article returns self when no parent" do
+    article = articles(:komodo_draft)
+    assert_equal article, article.original_article
+  end
+
+  test "original_article returns parent for a version" do
+    v2 = articles(:komodo_v2)
+    assert_equal articles(:komodo_draft), v2.original_article
+  end
+
+  test "all_versions returns all versions including self" do
+    article = articles(:komodo_draft)
+    versions = article.all_versions
+    assert_includes versions, article
+    assert_includes versions, articles(:komodo_v2)
+    assert_equal 2, versions.count
+  end
+
+  test "all_versions from a child also returns all versions" do
+    v2 = articles(:komodo_v2)
+    versions = v2.all_versions
+    assert_equal 2, versions.count
+    assert_includes versions, articles(:komodo_draft)
+  end
+
+  test "has_versions? returns true when versions exist" do
+    assert articles(:komodo_draft).has_versions?
+  end
+
+  test "has_versions? returns false for standalone article" do
+    assert_not articles(:published_article).has_versions?
+  end
+
+  test "next_version_number returns incremented number" do
+    article = articles(:komodo_draft)
+    assert_equal 3, article.next_version_number
+  end
+
+  test "next_version_number returns 2 for standalone article" do
+    article = articles(:published_article)
+    assert_equal 2, article.next_version_number
+  end
+
+  test "originals scope excludes versions" do
+    originals = users(:alice).articles.originals
+    assert_includes originals, articles(:komodo_draft)
+    assert_includes originals, articles(:published_article)
+    assert_not_includes originals, articles(:komodo_v2)
+  end
 end

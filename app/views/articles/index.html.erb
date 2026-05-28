@@ -25,6 +25,9 @@
               <%= article.status.capitalize %>
             </span>
             &middot; <%= time_ago_in_words(article.created_at) %> ago
+            <% if article.has_versions? %>
+              &middot; <%= link_to "#{article.all_versions.count} versions", versions_article_path(article), class: "text-indigo-600 hover:text-indigo-800" %>
+            <% end %>
           </p>
           <% if article.hook.present? %>
             <p class="text-gray-600 mt-2 text-sm line-clamp-2"><%= article.hook %></p>

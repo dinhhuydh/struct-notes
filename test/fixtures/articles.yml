@@ -10,6 +10,7 @@ komodo_draft:
   status: draft
   user: alice
   template: travel_experience
+  version_number: 1
 
 published_article:
   title: Chiang Mai Elephant Sanctuary
@@ -23,3 +24,20 @@ published_article:
   status: published
   user: alice
   template: travel_experience
+  version_number: 1
+
+komodo_v2:
+  title: Komodo Boat Trip - Casual Version
+  hook: So we jumped on a boat to see some dragons...
+  body_sections: <%= [{"heading" => "The Trip", "content" => "Three days on a boat.", "source_excerpt" => "sailed 3 days"}].to_json %>
+  best_for: Adventure seekers
+  not_for: Those afraid of lizards
+  ethics_notes:
+  key_facts: <%= [{"label" => "Duration", "value" => "3 days", "source_excerpt" => "3 day trip"}].to_json %>
+  raw_notes: "Went on a 3 day Komodo boat trip. Sailed 3 days. Amazing dragons. Cost about $300 per person."
+  status: draft
+  tone: casual_fun
+  user: alice
+  template: travel_experience
+  parent: komodo_draft
+  version_number: 2

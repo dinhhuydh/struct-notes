@@ -1,10 +1,10 @@
 class ArticlesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_article, only: %i[show edit update destroy]
+  before_action :set_article, only: %i[show edit update destroy regenerate do_regenerate versions]
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def index
-    @articles = current_user.articles.recent
+    @articles = current_user.articles.originals.recent
   end
 
   def show
@@ -67,6 +67,49 @@ class ArticlesController < ApplicationController
   def destroy
     @article.destroy
     redirect_to articles_path, notice: "Article deleted."
+  end
+
+  def regenerate
+    @templates = Template.system_templates
+  end
+
+  def do_regenerate
+    template = Template.find_by(id: params[:template_id]) || @article.template || Template.default_template
+    tone = Article::TONES.key?(params[:tone]) ? params[:tone] : @article.tone
+
+    unless current_user.can_generate?
+      redirect_to article_path(@article), alert: "You've reached your monthly generation limit (#{current_user.generation_limit})." and return
+    end
+
+    begin
+      tone_instruction = Article::TONES.dig(tone, :instruction)
+      result = ArticleGeneratorService.new.call(@article.raw_notes, template, tone_instruction: tone_instruction)
+
+      root = @article.original_article
+      new_article = current_user.articles.create!(
+        raw_notes: @article.raw_notes,
+        template: template,
+        tone: tone,
+        parent: root,
+        version_number: root.next_version_number,
+        title: result["title"],
+        hook: result["hook"],
+        body_sections: result["body_sections"],
+        best_for: result["best_for"],
+        not_for: result["not_for"],
+        ethics_notes: result["ethics_notes"],
+        key_facts: result["key_facts"],
+        status: "draft"
+      )
+      current_user.increment_generation_count!
+      redirect_to edit_article_path(new_article), notice: "New version (v#{new_article.version_number}) generated!"
+    rescue ArticleGeneratorService::GenerationError => e
+      redirect_to article_path(@article), alert: e.message
+    end
+  end
+
+  def versions
+    @versions = @article.all_versions
   end
 
   private

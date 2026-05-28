@@ -106,4 +106,60 @@ class ArticlesFlowTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
   end
+
+  # Versioning tests
+  test "shows regenerate form" do
+    sign_in @user
+    article = articles(:komodo_draft)
+    get regenerate_article_path(article)
+    assert_response :success
+    assert_select "h1", "Regenerate Article"
+    assert_select "select[name='template_id']"
+    assert_select "select[name='tone']"
+  end
+
+  test "shows versions page" do
+    sign_in @user
+    article = articles(:komodo_draft)
+    get versions_article_path(article)
+    assert_response :success
+    assert_select "h1", "Version History"
+  end
+
+  test "index only shows original articles" do
+    sign_in @user
+    get articles_path
+    assert_response :success
+    assert_select "h2", articles(:komodo_draft).title
+    assert_select "h2", text: articles(:komodo_v2).title, count: 0
+  end
+
+  test "show page displays version badge when versions exist" do
+    sign_in @user
+    get article_path(articles(:komodo_draft))
+    assert_select "a", "v1"
+  end
+
+  test "show page has no version badge for standalone article" do
+    sign_in @user
+    get article_path(articles(:published_article))
+    assert_select "a", text: /^v\d+$/, count: 0
+  end
+
+  test "show page has regenerate button" do
+    sign_in @user
+    get article_path(articles(:komodo_draft))
+    assert_select "a", "Regenerate"
+  end
+
+  test "regenerate rejects user at limit" do
+    user = users(:bob)
+    user.update!(generations_this_month: 20)
+    sign_in user
+    # Create an article for bob to regenerate
+    article = user.articles.create!(raw_notes: "A" * 100, title: "Test", status: "draft", template: templates(:travel_experience))
+    post regenerate_article_path(article), params: { template_id: templates(:travel_experience).id, tone: "casual_fun" }
+    assert_redirected_to article_path(article)
+    assert_match(/generation limit/, flash[:alert])
+  end
 end
