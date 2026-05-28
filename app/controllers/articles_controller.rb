@@ -73,26 +73,24 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    permitted = params.require(:article).permit(:title, :hook, :best_for, :not_for, :ethics_notes, :status)
+    permitted = params.require(:article).permit(
+      :title, :hook, :best_for, :not_for, :ethics_notes, :status,
+      body_sections_attributes: [:heading, :content],
+      key_facts_attributes: [:label, :value]
+    )
 
-    if params[:article][:body_sections_attributes].present?
-      sections = params[:article][:body_sections_attributes].values.map do |s|
-        { "heading" => s[:heading], "content" => s[:content], "source_excerpt" => @article.body_sections&.dig(s.keys.first.to_i, "source_excerpt") }
+    if permitted[:body_sections_attributes].present?
+      permitted[:body_sections] = permitted.delete(:body_sections_attributes).values.each_with_index.map do |s, i|
+        source = @article.body_sections&.dig(i, "source_excerpt") || ""
+        { "heading" => s[:heading], "content" => s[:content], "source_excerpt" => source }
       end
-      # Preserve source_excerpt from existing data
-      sections = params[:article][:body_sections_attributes].to_unsafe_h.sort_by { |k, _| k.to_i }.map do |_, s|
-        existing = @article.body_sections&.find { |bs| bs["heading"] == s["heading"] }
-        { "heading" => s["heading"], "content" => s["content"], "source_excerpt" => existing&.dig("source_excerpt") || "" }
-      end
-      permitted[:body_sections] = sections
     end
 
-    if params[:article][:key_facts_attributes].present?
-      facts = params[:article][:key_facts_attributes].to_unsafe_h.sort_by { |k, _| k.to_i }.map do |_, f|
-        existing = @article.key_facts&.find { |kf| kf["label"] == f["label"] }
-        { "label" => f["label"], "value" => f["value"], "source_excerpt" => existing&.dig("source_excerpt") || "" }
+    if permitted[:key_facts_attributes].present?
+      permitted[:key_facts] = permitted.delete(:key_facts_attributes).values.each_with_index.map do |f, i|
+        source = @article.key_facts&.dig(i, "source_excerpt") || ""
+        { "label" => f[:label], "value" => f[:value], "source_excerpt" => source }
       end
-      permitted[:key_facts] = facts
     end
 
     permitted
