@@ -16,7 +16,7 @@ class ArticleGeneratorService
     begin
       client = Anthropic::Client.new(
         api_key: api_key,
-        request_timeout: API_TIMEOUT
+        timeout: API_TIMEOUT
       )
 
       response = client.messages.create(
