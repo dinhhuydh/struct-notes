@@ -39,8 +39,9 @@ class ArticleGeneratorService
       raise GenerationError, "AI service is temporarily unavailable. Please try again later."
     rescue Anthropic::Errors::APIConnectionError
       raise GenerationError, "Could not reach the AI service. Please check your connection and try again."
-    rescue Anthropic::Errors::APIError => e
-      raise GenerationError, "AI service error: #{e.message}"
+    rescue Anthropic::Errors::APIStatusError => e
+      msg = extract_api_error_message(e)
+      raise GenerationError, "AI service error: #{msg}"
     end
   end
 
@@ -73,6 +74,18 @@ class ArticleGeneratorService
     missing = required - data.keys
     if missing.any?
       raise GenerationError, "AI response is missing required fields: #{missing.join(', ')}. Please try again."
+    end
+  end
+
+  def extract_api_error_message(error)
+    body = error.message.to_s
+    if body.include?("credit balance is too low")
+      "Your Anthropic API credit balance is too low. Please add credits at console.anthropic.com."
+    elsif body.include?("invalid_request_error")
+      match = body.match(/:message=>"([^"]+)"/)
+      match ? match[1] : "Invalid request to AI service."
+    else
+      "Unexpected error. Please try again."
     end
   end
 end
