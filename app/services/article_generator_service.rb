@@ -39,7 +39,9 @@ class ArticleGeneratorService
       raise GenerationError, "AI service is temporarily unavailable. Please try again later."
     rescue Anthropic::Errors::APIConnectionError => e
       Rails.logger.error("Anthropic connection error: #{e.class} - #{e.message}")
-      raise GenerationError, "Could not reach the AI service. Please check your connection and try again."
+      Rails.logger.error("Cause: #{e.cause.class} - #{e.cause&.message}") if e.cause
+      Rails.logger.error(e.backtrace.first(10).join("\n"))
+      raise GenerationError, "Could not reach the AI service. (#{e.cause&.class}: #{e.cause&.message})"
     rescue Anthropic::Errors::APIStatusError => e
       Rails.logger.error("Anthropic status error: #{e.class} - #{e.message}")
       msg = extract_api_error_message(e)
