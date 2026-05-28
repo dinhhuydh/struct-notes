@@ -1,3 +1,24 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="96" fill="#4F46E5"/>
+  <g transform="translate(96, 72)">
+    <!-- Notepad body -->
+    <rect x="40" y="40" width="240" height="300" rx="16" fill="white" opacity="0.95"/>
+    <!-- Lines on notepad -->
+    <line x1="80" y1="110" x2="240" y2="110" stroke="#4F46E5" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+    <line x1="80" y1="155" x2="220" y2="155" stroke="#4F46E5" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+    <line x1="80" y1="200" x2="200" y2="200" stroke="#4F46E5" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+    <line x1="80" y1="245" x2="230" y2="245" stroke="#4F46E5" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+    <!-- Structured checkmarks -->
+    <circle cx="80" cy="110" r="6" fill="#4F46E5"/>
+    <circle cx="80" cy="155" r="6" fill="#4F46E5"/>
+    <circle cx="80" cy="200" r="6" fill="#4F46E5"/>
+    <circle cx="80" cy="245" r="6" fill="#4F46E5"/>
+    <!-- Pen -->
+    <g transform="translate(180, 180) rotate(45)">
+      <rect x="-8" y="-80" width="16" height="100" rx="4" fill="#FCD34D"/>
+      <polygon points="-8,20 8,20 0,38" fill="#FCD34D"/>
+      <rect x="-8" y="-80" width="16" height="16" rx="2" fill="#F59E0B"/>
+      <polygon points="-3,32 3,32 0,38" fill="#374151"/>
+    </g>
+  </g>
 </svg>
