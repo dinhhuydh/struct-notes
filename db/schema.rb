@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_26_155129) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_28_042737) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.text "hook"
@@ -25,6 +28,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_26_155129) do
     t.integer "template_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tone", default: "magazine_editorial", null: false
     t.index ["template_id"], name: "index_articles_on_template_id"
     t.index ["user_id"], name: "index_articles_on_user_id"
   end

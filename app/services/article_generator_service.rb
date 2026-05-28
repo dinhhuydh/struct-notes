@@ -3,7 +3,7 @@ class ArticleGeneratorService
 
   API_TIMEOUT = 60
 
-  def call(raw_notes, template)
+  def call(raw_notes, template, tone_instruction: nil)
     api_key = ENV["ANTHROPIC_API_KEY"]
     model = ENV.fetch("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
 
@@ -12,6 +12,9 @@ class ArticleGeneratorService
     end
 
     prompt = template.prompt_template % { raw_notes: raw_notes }
+
+    system_prompt = "You are a travel magazine editor. Always respond with valid JSON only. No markdown, no code fences, no explanation — just the JSON object."
+    system_prompt += "\n\nTONE: #{tone_instruction}" if tone_instruction.present?
 
     begin
       client = Anthropic::Client.new(
@@ -25,7 +28,7 @@ class ArticleGeneratorService
         messages: [
           { role: "user", content: prompt }
         ],
-        system: "You are a travel magazine editor. Always respond with valid JSON only. No markdown, no code fences, no explanation — just the JSON object."
+        system: system_prompt
       )
 
       parse_response(response)

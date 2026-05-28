@@ -14,6 +14,33 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes article.errors[:status], "is not included in the list"
   end
 
+  test "validates tone inclusion" do
+    article = articles(:komodo_draft)
+    article.tone = "invalid_tone"
+    assert_not article.valid?
+    assert_includes article.errors[:tone], "is not included in the list"
+  end
+
+  test "default tone is magazine_editorial" do
+    article = Article.new
+    assert_equal "magazine_editorial", article.tone
+  end
+
+  test "TONES contains expected keys" do
+    expected = %w[magazine_editorial casual_fun luxury backpacker poetic]
+    assert_equal expected.sort, Article::TONES.keys.sort
+  end
+
+  test "tone_label returns human-readable label" do
+    article = articles(:komodo_draft)
+    assert_equal "Magazine Editorial", article.tone_label
+  end
+
+  test "tone_instruction returns prompt instruction" do
+    article = articles(:komodo_draft)
+    assert_match(/polished/, article.tone_instruction)
+  end
+
   test "draft? returns true for draft articles" do
     assert articles(:komodo_draft).draft?
   end

@@ -20,6 +20,7 @@
           <% end %>
           <p class="text-gray-500 text-sm mt-1">
             <%= article.template&.name || "No template" %> &middot;
+            <%= article.tone_label %> &middot;
             <span class="<%= article.draft? ? 'text-yellow-600' : 'text-green-600' %>">
               <%= article.status.capitalize %>
             </span>

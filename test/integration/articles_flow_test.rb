@@ -17,12 +17,14 @@ class ArticlesFlowTest < ActionDispatch::IntegrationTest
     assert_select "h1", "Your Articles"
   end
 
-  test "shows new upload form" do
+  test "shows new upload form with tone selector" do
     sign_in @user
     get new_upload_articles_path
     assert_response :success
     assert_select "h1", "Create New Article"
     assert_select "select[name='template_id']"
+    assert_select "select[name='tone']"
+    assert_select "select[name='tone'] option", count: Article::TONES.size
   end
 
   test "shows article" do

@@ -24,16 +24,19 @@ class ArticlesController < ApplicationController
     end
 
     template = Template.find_by(id: params[:template_id]) || Template.default_template
+    tone = Article::TONES.key?(params[:tone]) ? params[:tone] : "magazine_editorial"
 
     unless current_user.can_generate?
       redirect_to new_upload_articles_path, alert: "You've reached your monthly generation limit (#{current_user.generation_limit}). Please try again next month." and return
     end
 
     begin
-      result = ArticleGeneratorService.new.call(raw_notes, template)
+      tone_instruction = Article::TONES.dig(tone, :instruction)
+      result = ArticleGeneratorService.new.call(raw_notes, template, tone_instruction: tone_instruction)
       @article = current_user.articles.create!(
         raw_notes: raw_notes,
         template: template,
+        tone: tone,
         title: result["title"],
         hook: result["hook"],
         body_sections: result["body_sections"],
