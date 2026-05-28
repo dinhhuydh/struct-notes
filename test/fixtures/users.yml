@@ -2,12 +2,25 @@ alice:
   name: Alice
   email: alice@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  generation_limit: 20
+  plan: free
+  generation_limit: 5
   generations_this_month: 0
+  generation_count_reset_at: <%= Time.current %>
 
 bob:
   name: Bob
   email: bob@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  generation_limit: 20
-  generations_this_month: 19
+  plan: free
+  generation_limit: 5
+  generations_this_month: 4
+  generation_count_reset_at: <%= Time.current %>
+
+pro_user:
+  name: Carol
+  email: carol@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  plan: pro
+  generation_limit: 200
+  generations_this_month: 10
+  generation_count_reset_at: <%= Time.current %>

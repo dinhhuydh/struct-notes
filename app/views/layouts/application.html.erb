@@ -19,9 +19,13 @@
             <%= link_to "StructNotes", root_path, class: "text-xl font-bold text-indigo-600" %>
           </div>
           <div class="flex items-center space-x-4">
+            <%= link_to "Pricing", pricing_path, class: "text-sm text-gray-500 hover:text-gray-700" %>
             <% if user_signed_in? %>
               <span class="text-sm text-gray-600">
-                <%= current_user.generations_this_month %>/<%= current_user.generation_limit %> generations
+                <%= current_user.generations_remaining %>/<%= current_user.generation_limit %>
+              </span>
+              <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full <%= current_user.pro? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600' %>">
+                <%= current_user.plan_label %>
               </span>
               <span class="text-sm text-gray-500"><%= current_user.email %></span>
               <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-sm text-gray-500 hover:text-gray-700" %>

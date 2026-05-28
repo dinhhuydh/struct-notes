@@ -83,16 +83,16 @@ class ArticlesFlowTest < ActionDispatch::IntegrationTest
     assert_match(/too short/, flash[:alert])
   end
 
-  test "generate rejects user at limit" do
+  test "generate rejects user at limit and redirects to pricing" do
     user = users(:bob)
-    user.update!(generations_this_month: 20)
+    user.update!(generations_this_month: 5)
     sign_in user
     post generate_articles_path, params: {
       raw_notes: "A" * 100,
       template_id: templates(:travel_experience).id
     }
-    assert_redirected_to new_upload_articles_path
-    assert_match(/generation limit/, flash[:alert])
+    assert_redirected_to pricing_path
+    assert_match(/used all/, flash[:alert])
   end
 
   test "landing page shows for unauthenticated users" do
@@ -154,12 +154,34 @@ class ArticlesFlowTest < ActionDispatch::IntegrationTest
 
   test "regenerate rejects user at limit" do
     user = users(:bob)
-    user.update!(generations_this_month: 20)
+    user.update!(generations_this_month: 5)
     sign_in user
-    # Create an article for bob to regenerate
     article = user.articles.create!(raw_notes: "A" * 100, title: "Test", status: "draft", template: templates(:travel_experience))
     post regenerate_article_path(article), params: { template_id: templates(:travel_experience).id, tone: "casual_fun" }
-    assert_redirected_to article_path(article)
-    assert_match(/generation limit/, flash[:alert])
+    assert_redirected_to pricing_path
+    assert_match(/used all/, flash[:alert])
+  end
+
+  # Pricing & upgrade tests
+  test "pricing page is accessible" do
+    get pricing_path
+    assert_response :success
+    assert_select "h1", /pricing/i
+  end
+
+  test "upgrade changes user to pro" do
+    sign_in users(:alice)
+    post upgrade_path
+    assert_redirected_to articles_path
+    users(:alice).reload
+    assert users(:alice).pro?
+    assert_equal 200, users(:alice).generation_limit
+  end
+
+  test "upgrade when already pro redirects with notice" do
+    sign_in users(:pro_user)
+    post upgrade_path
+    assert_redirected_to articles_path
+    assert_match(/already/, flash[:notice])
   end
 end

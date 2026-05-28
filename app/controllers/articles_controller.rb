@@ -27,7 +27,7 @@ class ArticlesController < ApplicationController
     tone = Article::TONES.key?(params[:tone]) ? params[:tone] : "magazine_editorial"
 
     unless current_user.can_generate?
-      redirect_to new_upload_articles_path, alert: "You've reached your monthly generation limit (#{current_user.generation_limit}). Please try again next month." and return
+      redirect_to pricing_path, alert: "You've used all #{current_user.generation_limit} generations this month. #{current_user.free? ? 'Upgrade to Pro for 200/month!' : 'Your limit resets next month.'}" and return
     end
 
     begin
@@ -78,7 +78,7 @@ class ArticlesController < ApplicationController
     tone = Article::TONES.key?(params[:tone]) ? params[:tone] : @article.tone
 
     unless current_user.can_generate?
-      redirect_to article_path(@article), alert: "You've reached your monthly generation limit (#{current_user.generation_limit})." and return
+      redirect_to pricing_path, alert: "You've used all #{current_user.generation_limit} generations this month. #{current_user.free? ? 'Upgrade to Pro for 200/month!' : 'Your limit resets next month.'}" and return
     end
 
     begin

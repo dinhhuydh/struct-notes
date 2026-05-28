@@ -1,0 +1,105 @@
+<div class="max-w-4xl mx-auto py-12">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Simple, transparent pricing</h1>
+    <p class="text-xl text-gray-600">Start free. Upgrade when you need more.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+    <!-- Free Plan -->
+    <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
+      <h2 class="text-lg font-semibold text-gray-900">Free</h2>
+      <div class="mt-4 flex items-baseline">
+        <span class="text-5xl font-bold text-gray-900">$0</span>
+        <span class="ml-2 text-gray-500">/month</span>
+      </div>
+      <p class="mt-4 text-gray-600">Perfect for trying out StructNotes.</p>
+
+      <ul class="mt-8 space-y-3">
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700"><strong>5 article generations</strong> per month</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">All 3 article templates</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">All 5 tone options</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">Source attribution</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">Article versioning</span>
+        </li>
+      </ul>
+
+      <div class="mt-8">
+        <% if user_signed_in? && current_user.free? %>
+          <span class="block w-full text-center py-3 px-4 rounded-md font-medium border border-gray-300 text-gray-500">Current plan</span>
+        <% else %>
+          <%= link_to "Get started", new_user_registration_path, class: "block w-full text-center py-3 px-4 rounded-md font-medium border border-gray-300 text-gray-700 hover:bg-gray-50" %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="bg-white rounded-xl border-2 border-indigo-600 p-8 shadow-sm relative">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+        <span class="bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Most Popular</span>
+      </div>
+
+      <h2 class="text-lg font-semibold text-gray-900">Pro</h2>
+      <div class="mt-4 flex items-baseline">
+        <span class="text-5xl font-bold text-gray-900">$19</span>
+        <span class="ml-2 text-gray-500">/month</span>
+      </div>
+      <p class="mt-4 text-gray-600">For teams and power users who publish regularly.</p>
+
+      <ul class="mt-8 space-y-3">
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700"><strong>200 article generations</strong> per month</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">All 3 article templates</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">All 5 tone options</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">Source attribution</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">Article versioning</span>
+        </li>
+        <li class="flex items-start">
+          <svg class="h-5 w-5 text-green-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          <span class="ml-3 text-gray-700">Priority support</span>
+        </li>
+      </ul>
+
+      <div class="mt-8">
+        <% if user_signed_in? && current_user.pro? %>
+          <span class="block w-full text-center py-3 px-4 rounded-md font-medium border border-indigo-300 text-indigo-500">Current plan</span>
+        <% elsif user_signed_in? %>
+          <%= button_to "Upgrade to Pro", upgrade_path, method: :post, class: "block w-full text-center py-3 px-4 rounded-md font-medium bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer" %>
+        <% else %>
+          <%= link_to "Get started", new_user_registration_path, class: "block w-full text-center py-3 px-4 rounded-md font-medium bg-indigo-600 text-white hover:bg-indigo-700" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center text-sm text-gray-500 mt-8">
+    All plans include a monthly generation allowance that resets automatically.
+    <br>Need more? Contact us at hello@structnotes.com.
+  </p>
+</div>

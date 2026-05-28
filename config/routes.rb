@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
   root "pages#landing"
 
+  get "pricing", to: "pages#pricing"
+  post "upgrade", to: "pages#upgrade"
+
   resources :articles, except: [:new] do
     collection do
       get :new_upload, path: "new"

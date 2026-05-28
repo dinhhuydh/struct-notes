@@ -62,7 +62,11 @@
         </span>
       </button>
       <p class="text-sm text-gray-500 mt-2 text-center">
-        You have <%= current_user.generation_limit - current_user.generations_this_month %> generations remaining this month.
+        <%= current_user.generations_remaining %> of <%= current_user.generation_limit %> generations remaining
+        (<%= current_user.plan_label %> plan).
+        <% if current_user.free? %>
+          <%= link_to "Upgrade to Pro", pricing_path, class: "text-indigo-600 hover:text-indigo-800" %>
+        <% end %>
       </p>
     </div>
   <% end %>
