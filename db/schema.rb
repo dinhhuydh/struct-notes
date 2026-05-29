@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_28_163333) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_29_034410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -31,6 +31,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_28_163333) do
     t.string "tone", default: "magazine_editorial", null: false
     t.bigint "parent_id"
     t.integer "version_number", default: 1, null: false
+    t.string "rating"
     t.index ["parent_id"], name: "index_articles_on_parent_id"
     t.index ["template_id"], name: "index_articles_on_template_id"
     t.index ["user_id"], name: "index_articles_on_user_id"

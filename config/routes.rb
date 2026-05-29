@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get :regenerate
       post :regenerate, action: :do_regenerate
       get :versions
+      patch :rate
     end
   end
 end

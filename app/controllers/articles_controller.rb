@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_article, only: %i[show edit update destroy regenerate do_regenerate versions]
+  before_action :set_article, only: %i[show edit update destroy regenerate do_regenerate versions rate]
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def index
@@ -110,6 +110,22 @@ class ArticlesController < ApplicationController
 
   def versions
     @versions = @article.all_versions
+  end
+
+  def rate
+    rating = params[:rating]
+    if Article::RATINGS.include?(rating)
+      # Toggle off if clicking the same rating
+      new_rating = @article.rating == rating ? nil : rating
+      @article.update!(rating: new_rating)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to edit_article_path(@article) }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("rating-buttons", partial: "articles/rating_buttons", locals: { article: @article })
+      end
+    end
   end
 
   private

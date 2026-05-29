@@ -114,4 +114,39 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes originals, articles(:published_article)
     assert_not_includes originals, articles(:komodo_v2)
   end
+
+  # Rating tests
+  test "rating defaults to nil" do
+    article = Article.new
+    assert_nil article.rating
+  end
+
+  test "validates rating inclusion" do
+    article = articles(:komodo_draft)
+    article.rating = "invalid"
+    assert_not article.valid?
+  end
+
+  test "allows nil rating" do
+    article = articles(:komodo_draft)
+    article.rating = nil
+    assert article.valid?
+  end
+
+  test "rated? returns false when not rated" do
+    assert_not articles(:komodo_draft).rated?
+  end
+
+  test "rated_up? returns true when rated up" do
+    article = articles(:komodo_draft)
+    article.update!(rating: "up")
+    assert article.rated_up?
+    assert article.rated?
+  end
+
+  test "rated_down? returns true when rated down" do
+    article = articles(:komodo_draft)
+    article.update!(rating: "down")
+    assert article.rated_down?
+  end
 end

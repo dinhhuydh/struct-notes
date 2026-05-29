@@ -184,4 +184,48 @@ class ArticlesFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to articles_path
     assert_match(/already/, flash[:notice])
   end
+
+  # Rating tests
+  test "rate article as thumbs up" do
+    sign_in @user
+    article = articles(:komodo_draft)
+    patch rate_article_path(article), params: { rating: "up" }
+    assert_redirected_to edit_article_path(article)
+    article.reload
+    assert_equal "up", article.rating
+  end
+
+  test "rate article as thumbs down" do
+    sign_in @user
+    article = articles(:komodo_draft)
+    patch rate_article_path(article), params: { rating: "down" }
+    assert_redirected_to edit_article_path(article)
+    article.reload
+    assert_equal "down", article.rating
+  end
+
+  test "toggle rating off by clicking same rating" do
+    sign_in @user
+    article = articles(:komodo_draft)
+    article.update!(rating: "up")
+    patch rate_article_path(article), params: { rating: "up" }
+    assert_redirected_to edit_article_path(article)
+    article.reload
+    assert_nil article.rating
+  end
+
+  test "invalid rating is ignored" do
+    sign_in @user
+    article = articles(:komodo_draft)
+    patch rate_article_path(article), params: { rating: "invalid" }
+    assert_redirected_to edit_article_path(article)
+    article.reload
+    assert_nil article.rating
+  end
+
+  test "edit page shows rating buttons" do
+    sign_in @user
+    get edit_article_path(articles(:komodo_draft))
+    assert_select "#rating-buttons"
+  end
 end

@@ -28,6 +28,11 @@
             <% if article.has_versions? %>
               &middot; <%= link_to "#{article.all_versions.count} versions", versions_article_path(article), class: "text-indigo-600 hover:text-indigo-800" %>
             <% end %>
+            <% if article.rated_up? %>
+              &middot; <span class="text-green-600">&#x1F44D;</span>
+            <% elsif article.rated_down? %>
+              &middot; <span class="text-red-600">&#x1F44E;</span>
+            <% end %>
           </p>
           <% if article.hook.present? %>
             <p class="text-gray-600 mt-2 text-sm line-clamp-2"><%= article.hook %></p>
