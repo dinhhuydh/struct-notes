@@ -67,7 +67,7 @@ end
 
 gem "devise", "~> 5.0"
 
-gem "anthropic", "~> 1.43"
+gem "anthropic", "~> 1.44"
 
 gem "docx", "~> 0.10.0"
 
